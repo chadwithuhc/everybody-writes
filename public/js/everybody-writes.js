@@ -11,7 +11,9 @@ if (joinRoomInput) {
 }
 
 var joinRoomForm = document.querySelector('#joinRoomForm')
-joinRoomForm.addEventListener('submit', function (event) {
-  event.preventDefault()
-  window.location.href = '/rooms/' + joinRoomInput.value
-})
+if (joinRoomForm) {
+  joinRoomForm.addEventListener('submit', function (event) {
+    event.preventDefault()
+    window.location.href = '/rooms/' + joinRoomInput.value
+  })
+}
