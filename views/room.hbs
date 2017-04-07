@@ -5,24 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{ room }} - Everybody Writes</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 
   <header>
     <nav class="navbar navbar-toggleable-sm navbar-inverse bg-inverse">
       <a class="navbar-brand" href="/rooms/{{room}}">{{ room }} <small class="text-muted">(room)</small></a>
-      <!-- <div class="collapse navbar-collapse">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
-          </li>
-        </ul>
-      </div> -->
-      <span id="userName" class="navbar-text ml-auto" data-target-for="userName"><!-- user.name --></span>
+      <div class="collapse navbar-collapse" data-target-for="ownerControlsTemplate"><!-- ownerControlsTemplate --></div>
+      <span id="userName" class="navbar-text" data-target-for="userName"><!-- user.name --></span>
     </nav>
   </header>
 
@@ -44,7 +36,9 @@
   <main id="app" class="container-fluid w-100 p-0">
     <div class="row no-gutters">
       <div class="col" data-target-for="usersTemplate"><!-- usersTemplate --></div>
-      <div class="col col-9 p-3" data-target-for="contentTemplate"><!-- contentTemplate --></div>
+      <div class="col col-9 p-3">
+        <div data-target-for="contentTemplate"><!-- contentTemplate --></div>
+      </div>
     </div>
   </main>
 
@@ -63,8 +57,30 @@
     </div>
   </script>
 
+  <script type="text/template" id="ownerControlsTemplate">
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-pencil-square" aria-hidden="true"></i> Editor Type</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="#">Textarea</a>
+          <a class="dropdown-item" href="#">Code Editor</a>
+          <a class="dropdown-item" href="#">True / False</a>
+          <a class="dropdown-item" href="#">Options</a>
+        </div>
+      </li>
+      <li class="nav-separator"></li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fa fa-refresh" aria-hidden="true"></i> Random Answer</a>
+      </li>
+    </ul>
+  </script>
+
   <script>const ROOM = '{{ room }}'</script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/everybody-writes.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 </body>
 </html>

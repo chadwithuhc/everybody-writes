@@ -12,7 +12,7 @@ __Note: Only compatible in ES6 browsers (Chrome)__
   - [ ] Owner can be switched by owner
   - [x] If owner leaves, next earliest user is promoted
 - [ ] Option of input type
-  - [ ] Textarea
+  - [x] Textarea
   - [ ] Code Editor
   - [ ] Drawing
 - [ ] Show all available answers

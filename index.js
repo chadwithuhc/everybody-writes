@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
     console.log('JOIN ROOM:', socket.room.name, socket.user)
 
     socket.emit('joined', socket.room)
-    io.in(socket.room.name).emit('updates.user', socket.room)
+    io.in(socket.room.name).emit('updates.users', socket.room)
   })
 
   socket.on('disconnect', () => {
@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
       socket.room.users.splice(index, 1)
 
       // Send user updates to everyone in room
-      io.in(socket.room.name).emit('updates.user', socket.room)
+      io.in(socket.room.name).emit('updates.users', socket.room)
       console.log('DISCONNECTED:', socket.room.name, socket.user)
     }
   })
