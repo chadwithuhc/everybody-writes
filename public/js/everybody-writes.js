@@ -55,6 +55,11 @@
     renderApp(roomInfo)
   })
 
+  socket.on('updates.user', function (roomInfo) {
+    console.info('Updates', roomInfo)
+    renderApp(roomInfo)
+  })
+
   function renderApp(roomInfo) {
     app.innerHTML = ''
     writeUsers(roomInfo.users)

@@ -14,26 +14,40 @@ app.use(express.static('public'))
 io.on('connection', (socket) => {
 
   socket.on('join', ({ room, user }) => {
-    let roomInfo = {
-      name: room,
-      users: []
-    }
+    socket.user = user
 
     // Create or get room in our map
     if (!rooms.hasOwnProperty(room)) {
-      rooms[room] = roomInfo
+      rooms[room] = socket.room = {
+        name: room,
+        users: []
+      }
     }
     else {
-      roomInfo = rooms[room]
+      socket.room = rooms[room]
     }
 
     socket.join(room)
-    roomInfo.users.push(user)
-    console.log('JOIN ROOM:', roomInfo)
+    socket.room.users.push(user)
+    console.log('JOIN ROOM:', socket.room.name, socket.user)
 
-    socket.emit('joined', roomInfo)
+    socket.emit('joined', socket.room)
+    io.in(socket.room.name).emit('updates.user', socket.room)
+  })
+
+  socket.on('disconnect', () => {
+    // If a user connected AND joined the room
+    if (socket.room) {
+      const index = socket.room.users.indexOf(socket.user)
+      socket.room.users.splice(index, 1)
+
+      // Send user updates to everyone in room
+      io.in(socket.room.name).emit('updates.user', socket.room)
+      console.log('DISCONNECTED:', socket.room.name, socket.user)
+    }
   })
 })
+
 
 app.get('/', (req, res) => {
   res.render('index')
