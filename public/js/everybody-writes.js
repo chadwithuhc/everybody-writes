@@ -22,8 +22,6 @@
 
   let user = {}
 
-  let app = document.querySelector('#app')
-
   let studentNameInput = document.querySelector('#studentName')
   if (studentNameInput) {
     studentNameInput.focus()
@@ -57,12 +55,12 @@
 
   socket.on('updates.user', (roomInfo) => {
     console.info('Updates', roomInfo)
-    renderApp(roomInfo)
+    writeUsers(roomInfo.users)
   })
 
   function renderApp(roomInfo) {
-    app.innerHTML = ''
     writeUsers(roomInfo.users)
+    writeContentEditor()
   }
 
   function writeUsers(users) {
@@ -71,7 +69,7 @@
     // Find and mark owner
     let ownerUser = users.shift()
     ownerUser.owner = true
-    
+
     // Sort rest by Alphabetical Order
     let orderedUsers = [ownerUser].concat(
       users.sort((a, b) => a.name > b.name)
@@ -83,7 +81,19 @@
       return content + `<a class="nav-item nav-link" data-user-id="${user.id}">${user.name} ${ownerTemplate}</a>`
     }, '')
 
-    app.innerHTML += template.replace('{users}', html).replace('{userCount}', orderedUsers.length)
+    console.log(document.querySelector('[data-target-for="usersTemplate"]'))
+    document.querySelector('[data-target-for="usersTemplate"]').innerHTML = template.replace('{users}', html).replace('{userCount}', orderedUsers.length)
+
+    // Write to standalone user partials
+    document.querySelector('[data-target-for="userName"]').textContent = user.name
+  }
+
+  function writeContentEditor() {
+    let template = document.querySelector('#contentTemplate').innerHTML
+
+    // PROFIT
+
+    document.querySelector('[data-target-for="contentTemplate"]').innerHTML = template
   }
 
 }())

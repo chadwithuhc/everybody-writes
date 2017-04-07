@@ -12,22 +12,23 @@
   <header>
     <nav class="navbar navbar-toggleable-sm navbar-inverse bg-inverse">
       <a class="navbar-brand" href="/rooms/{{room}}">{{ room }} <small class="text-muted">(room)</small></a>
-      <div class="collapse navbar-collapse">
+      <!-- <div class="collapse navbar-collapse">
         <ul class="navbar-nav">
-          <!-- <li class="nav-item">
+          <li class="nav-item">
             <a class="nav-link" href="#">Features</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Pricing</a>
-          </li> -->
+          </li>
         </ul>
-      </div>
+      </div> -->
+      <span id="userName" class="navbar-text ml-auto" data-target-for="userName"><!-- user.name --></span>
     </nav>
   </header>
 
 
-  <main class="d-flex">
-    <form id="joinRoomWithNameForm" class="mx-auto my-5">
+  <div class="d-flex">
+    <form id="joinRoomWithNameForm" class="mx-auto my-5 w-50">
       <div class="alert alert-success" role="alert">
         <h4 class="alert-heading text-center">Please enter your name</h4>
       </div>
@@ -38,22 +39,31 @@
         </span>
       </div>
     </form>
+  </div>
 
-    <div id="app">
-
+  <main id="app" class="container-fluid w-100 p-0">
+    <div class="row no-gutters">
+      <div class="col" data-target-for="usersTemplate"><!-- usersTemplate --></div>
+      <div class="col col-9 p-3" data-target-for="contentTemplate"><!-- contentTemplate --></div>
     </div>
   </main>
 
   <script type="text/template" id="usersTemplate">
     <nav class="navbar navbar-inverse bg-inverse">
-      <h2 class="navbar-brand text-uppercase">Users <small class="badge badge-pill badge-default">{userCount}</small></h2>
+      <a class="btn btn-outline-secondary btn-block btn-sm text-uppercase text-muted">Users <span class="badge badge-pill badge-warning">{userCount}</span></a>
       <div class="navbar-nav">
         {users}
       </div>
     </nav>
   </script>
 
-  <script>let ROOM = '{{ room }}'</script>
+  <script type="text/template" id="contentTemplate">
+    <div class="content">
+      <textarea class="form-control"></textarea>
+    </div>
+  </script>
+
+  <script>const ROOM = '{{ room }}'</script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/everybody-writes.js"></script>
 </body>

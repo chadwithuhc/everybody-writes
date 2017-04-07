@@ -8,9 +8,9 @@ __Note: Only compatible in ES6 browsers (Chrome)__
 
 - [ ] Anyone with URL can join
   - [x] Joining a room available from homepage
-  - [ ] First person is considered owner
+  - [x] First person is considered owner
   - [ ] Owner can be switched by owner
-  - [ ] If owner leaves, next earliest user is promoted
+  - [x] If owner leaves, next earliest user is promoted
 - [ ] Option of input type
   - [ ] Textarea
   - [ ] Code Editor
