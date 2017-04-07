@@ -29,5 +29,9 @@ NodeJS, Express, Socket.io
 
 Clone repo:  
 ```
-git clone
+git clone https://github.com/chadwithuhc/everybody-writes.git
+npm install
+nodemon
+# OR
+npm start
 ```
