@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Everybody Writes</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+</head>
+<body>
+  <main class="d-flex">
+    <form id="joinRoomForm" class="mx-auto my-5">
+      <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Everybody Writes</h4>
+        <p class="mb-0">Please enter the room you wish to join</p>
+      </div>
+      <div class="input-group input-group-lg">
+        <input id="joinRoomInput" type="text" class="form-control" placeholder="room-name">
+        <span class="input-group-btn">
+          <button class="btn btn-success">Enter Room</button>
+        </span>
+      </div>
+    </form>
+  </main>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+
+      </div>
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/everybody-writes.js"></script>
+</body>
+</html>
