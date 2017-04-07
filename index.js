@@ -3,6 +3,8 @@ const app = express()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 
+const rooms = {}
+
 app.set('port', process.env.PORT || 3000)
 
 app.set('view engine', 'hbs')
@@ -11,9 +13,25 @@ app.use(express.static('public'))
 
 io.on('connection', (socket) => {
 
-  socket.emit('news', { hello: 'world' })
-  socket.on('my other event', function (data) {
-    console.log(data)
+  socket.on('join', ({ room, user }) => {
+    let roomInfo = {
+      name: room,
+      users: []
+    }
+
+    // Create or get room in our map
+    if (!rooms.hasOwnProperty(room)) {
+      rooms[room] = roomInfo
+    }
+    else {
+      roomInfo = rooms[room]
+    }
+
+    socket.join(room)
+    roomInfo.users.push(user)
+    console.log('JOIN ROOM:', roomInfo)
+
+    socket.emit('joined', roomInfo)
   })
 })
 

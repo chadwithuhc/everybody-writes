@@ -10,15 +10,21 @@
 <body>
 
   <main class="d-flex">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col">
-          {{ room }}
-        </div>
+    <h1>{{ room }} <small class="text-muted">(room)</small></h1>
+    <form id="joinRoomWithNameForm" class="mx-auto my-5">
+      <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Please enter your name</h4>
       </div>
-    </div>
+      <div class="input-group input-group-lg">
+        <input id="studentName" type="text" class="form-control" placeholder="John Smith">
+        <span class="input-group-btn">
+          <button class="btn btn-success">Enter Room</button>
+        </span>
+      </div>
+    </form>
   </main>
 
+  <script>var ROOM = '{{ room }}'</script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/everybody-writes.js"></script>
 </body>
