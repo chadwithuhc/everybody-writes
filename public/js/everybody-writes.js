@@ -22,6 +22,8 @@
 
   var user = {}
 
+  var app = document.querySelector('#app')
+
   var studentNameInput = document.querySelector('#studentName')
   if (studentNameInput) {
 
@@ -46,9 +48,26 @@
 
   socket.on('joined', function (roomInfo) {
     console.info('Joined', roomInfo)
-    
+
     // Bootstrap 4 hidden styling
     joinRoomWithNameForm.hidden = true
+
+    renderApp(roomInfo)
   })
+
+  function renderApp(roomInfo) {
+    app.innerHTML = ''
+    writeUsers(roomInfo.users)
+  }
+
+  function writeUsers(users) {
+    var template = document.querySelector('#usersTemplate').innerHTML
+
+    var html = users.reduce((content, user) => {
+      return content + '<a class="nav-item nav-link" data-user-id="' + user.id + '">' + user.name + '</a>'
+    }, '')
+
+    app.innerHTML += template.replace('{users}', html).replace('{userCount}', users.length)
+  }
 
 }())
