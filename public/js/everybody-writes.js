@@ -3,16 +3,16 @@
 
   // HOME
 
-  var socket = io()
+  let socket = io()
 
-  var joinRoomInput = document.querySelector('#joinRoomInput')
+  let joinRoomInput = document.querySelector('#joinRoomInput')
   if (joinRoomInput) {
     joinRoomInput.focus()
   }
 
-  var joinRoomForm = document.querySelector('#joinRoomForm')
+  let joinRoomForm = document.querySelector('#joinRoomForm')
   if (joinRoomForm) {
-    joinRoomForm.addEventListener('submit', function (event) {
+    joinRoomForm.addEventListener('submit', (event) => {
       event.preventDefault()
       window.location.href = '/rooms/' + joinRoomInput.value
     })
@@ -20,18 +20,18 @@
 
   // ROOM
 
-  var user = {}
+  let user = {}
 
-  var app = document.querySelector('#app')
+  let app = document.querySelector('#app')
 
-  var studentNameInput = document.querySelector('#studentName')
+  let studentNameInput = document.querySelector('#studentName')
   if (studentNameInput) {
-
+    studentNameInput.focus()
   }
 
-  var joinRoomWithNameForm = document.querySelector('#joinRoomWithNameForm')
+  let joinRoomWithNameForm = document.querySelector('#joinRoomWithNameForm')
   if (joinRoomWithNameForm) {
-    joinRoomWithNameForm.addEventListener('submit', function (event) {
+    joinRoomWithNameForm.addEventListener('submit', (event) => {
       event.preventDefault()
 
       user = {
@@ -46,7 +46,7 @@
     })
   }
 
-  socket.on('joined', function (roomInfo) {
+  socket.on('joined', (roomInfo) => {
     console.info('Joined', roomInfo)
 
     // Bootstrap 4 hidden styling
@@ -55,7 +55,7 @@
     renderApp(roomInfo)
   })
 
-  socket.on('updates.user', function (roomInfo) {
+  socket.on('updates.user', (roomInfo) => {
     console.info('Updates', roomInfo)
     renderApp(roomInfo)
   })
@@ -66,13 +66,24 @@
   }
 
   function writeUsers(users) {
-    var template = document.querySelector('#usersTemplate').innerHTML
+    let template = document.querySelector('#usersTemplate').innerHTML
 
-    var html = users.reduce((content, user) => {
-      return content + '<a class="nav-item nav-link" data-user-id="' + user.id + '">' + user.name + '</a>'
+    // Find and mark owner
+    let ownerUser = users.shift()
+    ownerUser.owner = true
+    
+    // Sort rest by Alphabetical Order
+    let orderedUsers = [ownerUser].concat(
+      users.sort((a, b) => a.name > b.name)
+    )
+
+    let html = orderedUsers.reduce((content, user) => {
+      let ownerTemplate = user.owner ? `<small class="badge badge-pill badge-default text-uppercase">Owner</small>` : ''
+
+      return content + `<a class="nav-item nav-link" data-user-id="${user.id}">${user.name} ${ownerTemplate}</a>`
     }, '')
 
-    app.innerHTML += template.replace('{users}', html).replace('{userCount}', users.length)
+    app.innerHTML += template.replace('{users}', html).replace('{userCount}', orderedUsers.length)
   }
 
 }())

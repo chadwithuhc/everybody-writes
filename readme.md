@@ -4,6 +4,8 @@
 
 ## Features
 
+__Note: Only compatible in ES6 browsers (Chrome)__
+
 - [ ] Anyone with URL can join
   - [x] Joining a room available from homepage
   - [ ] First person is considered owner
@@ -22,7 +24,7 @@
 
 ## Technologies
 
-NodeJS, Express, Socket.io
+NodeJS, Express, Socket.io, Handlebars, DOM Manipulation, ES6
 
 
 ## Running an exercise locally
