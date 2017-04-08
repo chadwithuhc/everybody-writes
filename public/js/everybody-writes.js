@@ -3,7 +3,7 @@
 
   let socket = io()
 
-  let user = {}
+  let me = {}
   let ownerUser = {}
 
   let studentNameInput = document.querySelector('#studentName')
@@ -16,14 +16,14 @@
     joinRoomWithNameForm.addEventListener('submit', (event) => {
       event.preventDefault()
 
-      user = {
+      me = {
         id: socket.id,
         name: studentNameInput.value
       }
 
       socket.emit('join', {
         room: ROOM,
-        user: user,
+        user: me,
         mocked: MOCKED
       })
     })
@@ -67,15 +67,17 @@
     )
 
     let html = orderedUsers.reduce((content, user) => {
-      let ownerTemplate = user.id === ownerUser.id ? `<small class="badge badge-pill badge-default text-uppercase">Owner</small>` : ''
+      const ownerTemplate = user.id === ownerUser.id ? `<small class="badge badge-pill badge-default text-uppercase">Owner</small>` : ''
 
-      return content + `<a class="nav-item nav-link" data-user-id="${user.id}">${user.name} ${ownerTemplate}</a>`
+      const currentUserClass = me.id === user.id ? 'text-warning' : ''
+
+      return content + `<a class="nav-item nav-link ${currentUserClass}" data-user-id="${user.id}">${user.name} ${ownerTemplate}</a>`
     }, '')
 
     document.querySelector('[data-target-for="usersTemplate"]').innerHTML = template.replace('{users}', html).replace('{userCount}', orderedUsers.length)
 
     // Write to standalone user partials
-    document.querySelector('[data-target-for="userName"]').textContent = user.name
+    document.querySelector('[data-target-for="userName"]').textContent = me.name
 
     writeOwnerControls()
   }
@@ -89,7 +91,7 @@
   function writeOwnerControls() {
     let template = document.querySelector('#ownerControlsTemplate').innerHTML
 
-    document.querySelector('[data-target-for="ownerControlsTemplate"]').innerHTML = user.id === ownerUser.id ? template : ''
+    document.querySelector('[data-target-for="ownerControlsTemplate"]').innerHTML = me.id === ownerUser.id ? template : ''
   }
 
 }())
