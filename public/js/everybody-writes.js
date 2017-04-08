@@ -5,6 +5,7 @@
 
   let me = {}
   let ownerUser = {}
+  let changingOwner = false
 
   let studentNameInput = document.querySelector('#studentName')
   if (studentNameInput) {
@@ -71,7 +72,7 @@
 
       const currentUserClass = me.id === user.id ? 'text-warning' : ''
 
-      return content + `<a class="nav-item nav-link ${currentUserClass}" data-user-id="${user.id}">${user.name} ${ownerTemplate}</a>`
+      return content + `<a class="nav-item nav-link ${currentUserClass}" data-user-id="${user.id}" data-trigger="clickUser">${user.name} ${ownerTemplate}</a>`
     }, '')
 
     document.querySelector('[data-target-for="usersTemplate"]').innerHTML = template.replace('{users}', html).replace('{userCount}', orderedUsers.length)
@@ -93,5 +94,49 @@
 
     document.querySelector('[data-target-for="ownerControlsTemplate"]').innerHTML = me.id === ownerUser.id ? template : ''
   }
+
+  function initChangeOwner() {
+    let template = document.querySelector('#changeOwnerTemplate').innerHTML
+
+    changingOwner = true
+
+    document.querySelector('[data-target-for="contentTemplate"]').innerHTML = template
+  }
+
+  function changeOwner(ownerId) {
+    console.log('changeOwner', ownerId)
+    socket.emit('changeOwner', { ownerId, authId: me.id })
+    changingOwner = false
+    writeContentEditor()
+  }
+
+  function cancelChangeOwner() {
+    changingOwner = false
+    writeContentEditor()
+  }
+
+  // Event Delegations
+  document.addEventListener('click', (event) => {
+    if (event.target.dataset.trigger === 'changeOwner') {
+      // Toggle
+      if (changingOwner) {
+        cancelChangeOwner()
+      }
+      else {
+        initChangeOwner()
+      }
+    }
+
+    if (event.target.dataset.trigger === 'clickUser') {
+      // If we're changing the user
+      if (changingOwner) {
+        changeOwner(event.target.dataset.userId)
+      }
+      // Otherwise show their editor
+      else {
+        // TODO
+      }
+    }
+  })
 
 }())

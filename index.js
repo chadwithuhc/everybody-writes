@@ -6,7 +6,7 @@ const io = require('socket.io')(server)
 const rooms = {}
 let id = 0
 const mockUsers = require('./mockUsers.json').map((user) => {
-  user.id = id++
+  user.id = (id++).toString()
   user.mocked = true
   return user
 })
@@ -49,6 +49,26 @@ io.on('connection', (socket) => {
 
     socket.emit('joined', socket.room)
     io.in(socket.room.name).emit('updates.users', socket.room)
+  })
+
+  socket.on('changeOwner', ({ ownerId, authId }) => {
+    // Ensure the real owner is making the request
+    if (socket.id === authId && socket.room.users[0].id === authId) {
+      // Loop through users to get index of user
+      let index = -1
+      let newOwner = socket.room.users.find((user, i) => {
+        if (user.id === ownerId) {
+          index = i
+          return true
+        }
+      })
+      // Splice out new owner
+      socket.room.users.splice(index, 1)
+      // Bump them to the front as owner
+      socket.room.users.unshift(newOwner)
+      io.in(socket.room.name).emit('updates.users', socket.room)
+      console.log('CHANGE OWNER:', socket.room.name, socket.user)
+    }
   })
 
   socket.on('disconnect', () => {
