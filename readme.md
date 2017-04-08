@@ -20,7 +20,7 @@ __Note: Only compatible in ES6 browsers (Chrome)__
 
 ## Technologies
 
-NodeJS, Express, Socket.io, Handlebars, DOM Manipulation, ES6
+NodeJS, Express, Socket.io, Handlebars, DOM Manipulation, ES6, HOF
 
 
 ## Running an exercise locally
