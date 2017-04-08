@@ -1,24 +1,7 @@
 (function() {
   'use strict';
 
-  // HOME
-
   let socket = io()
-
-  let joinRoomInput = document.querySelector('#joinRoomInput')
-  if (joinRoomInput) {
-    joinRoomInput.focus()
-  }
-
-  let joinRoomForm = document.querySelector('#joinRoomForm')
-  if (joinRoomForm) {
-    joinRoomForm.addEventListener('submit', (event) => {
-      event.preventDefault()
-      window.location.href = '/rooms/' + joinRoomInput.value
-    })
-  }
-
-  // ROOM
 
   let user = {}
   let ownerUser = {}
@@ -40,7 +23,8 @@
 
       socket.emit('join', {
         room: ROOM,
-        user: user
+        user: user,
+        mocked: MOCKED
       })
     })
   }
@@ -73,7 +57,13 @@
 
     // Sort rest by Alphabetical Order
     let orderedUsers = [ownerUser].concat(
-      users.sort((a, b) => a.name > b.name)
+      users.sort((a, b) => {
+        a = a.name.toLowerCase()
+        b = b.name.toLowerCase()
+        if (a < b) return -1
+        if (a > b) return 1
+        return 0
+      })
     )
 
     let html = orderedUsers.reduce((content, user) => {

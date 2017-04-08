@@ -24,7 +24,19 @@
     </form>
   </main>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/everybody-writes.js"></script>
+  <script>
+    let joinRoomInput = document.querySelector('#joinRoomInput')
+    if (joinRoomInput) {
+      joinRoomInput.focus()
+    }
+
+    let joinRoomForm = document.querySelector('#joinRoomForm')
+    if (joinRoomForm) {
+      joinRoomForm.addEventListener('submit', (event) => {
+        event.preventDefault()
+        window.location.href = '/rooms/' + joinRoomInput.value
+      })
+    }
+  </script>
 </body>
 </html>

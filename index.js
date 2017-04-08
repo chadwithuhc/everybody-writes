@@ -4,6 +4,15 @@ const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 
 const rooms = {}
+let id = 0
+const mockUsers = require('./mockUsers.json').map((user) => {
+  user.id = id++
+  user.mocked = true
+  return user
+})
+
+// DEBUGGING: Testing with mock users
+app.set('mockData', false)
 
 app.set('port', process.env.PORT || 3000)
 
@@ -13,22 +22,29 @@ app.use(express.static('public'))
 
 io.on('connection', (socket) => {
 
-  socket.on('join', ({ room, user }) => {
+  socket.on('join', ({ room, user, mocked }) => {
     socket.user = user
+    socket.mocked = mocked || app.get('mockData')
 
     // Create or get room in our map
     if (!rooms.hasOwnProperty(room)) {
       rooms[room] = socket.room = {
         name: room,
-        users: []
+        users: socket.mocked ? [user].concat(mockUsers) : [],
+        mocked: socket.mocked
       }
+      console.log('CREATE ROOM:', socket.room.name, socket.mocked ? 'MOCKED' : '')
     }
     else {
       socket.room = rooms[room]
     }
 
     socket.join(room)
-    socket.room.users.push(user)
+
+
+    if (!mocked) {
+      socket.room.users.push(user)
+    }
     console.log('JOIN ROOM:', socket.room.name, socket.user)
 
     socket.emit('joined', socket.room)
@@ -44,6 +60,12 @@ io.on('connection', (socket) => {
       // Send user updates to everyone in room
       io.in(socket.room.name).emit('updates.users', socket.room)
       console.log('DISCONNECTED:', socket.room.name, socket.user)
+
+      // Delete room if no users left
+      if (!socket.room.users.length || socket.mocked) {
+        delete rooms[socket.room.name]
+        console.log('DELETE ROOM:', socket.room.name, Object.keys(rooms))
+      }
     }
   })
 })
@@ -54,7 +76,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/rooms/:name', (req, res) => {
-  res.render('room', { room: req.params.name })
+  let room = req.params.name
+  // If we want mocked data and no room exists, create it
+  let mocked = !!req.query.mockData && !rooms.hasOwnProperty(room)
+
+  res.render('room', { room, mocked })
 })
 
 server.listen(app.get('port'), () => console.log('Running at http://localhost:' + app.get('port')))
