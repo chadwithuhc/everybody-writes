@@ -108,6 +108,28 @@ io.on('connection', (socket) => {
     }
   })
 
+  socket.on('updates.editor.random', () => {
+    // Only allow if owner
+    if (socket.id === socket.room.users[0].id) {
+      // Don't include our code
+      let random = Math.floor(Math.random() * socket.room.users.slice(1).length) + 1
+      let randomUser = socket.room.users[random]
+
+      // Mock data support
+      if (!Number.isNaN(+randomUser.id)) {
+        socket.emit('updates.editor', { value: randomUser.value })
+        console.log('RANDOM [MOCKED] ANSWER:', randomUser)
+      }
+      else {
+        socket.emit('updates.editor.randomAnswer', randomUser.id)
+        console.log('RANDOM ANSWER:', randomUser.name, randomUser.id)
+      }
+    }
+    else {
+      console.log('updates.editor.random ERR:', 'You are not an owner')
+    }
+  })
+
   // Request to listen to user editor changes fullfilled
   socket.on('updates.editor.requestFulfilled', ({ id, value }) => {
     // Set the userId to our room

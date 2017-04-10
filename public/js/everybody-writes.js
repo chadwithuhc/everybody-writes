@@ -139,15 +139,11 @@
   }
 
   function showEditor(userId) {
-    console.log('showEditor userId', userId)
     // Am I the owner? Then I can see other students work
     if (ownerUser.id !== me.id) {
       console.error('ERR:', 'You are not the owner')
       return
     }
-
-    // Kill all prior listeners
-    socket.removeAllListeners('updates.editor')
 
     // Am I showing my own editor?
     if (me.id === userId) {
@@ -159,14 +155,16 @@
 
     // Stop tracking my changes
     trackMyChanges = false
-
-    // Start listening for changes on users value
-    socket.on('updates.editor', ({ value }) => {
-      writeContentEditor(value)
-    })
     // Submit the request to the server, then the user
     socket.emit('updates.editor.request', { userId })
   }
+
+  // Listen for all updates
+  socket.on('updates.editor', ({ value }) => {
+    if (ownerUser.id === me.id) {
+      writeContentEditor(value)
+    }
+  })
 
   // We are being requested to send updates
   socket.on('updates.editor.request', () => {
@@ -179,6 +177,21 @@
   socket.on('updates.editor.terminate', () => {
     sendEditorUpdates = false
     trackMyChanges = true
+  })
+
+  function getRandomAnswer() {
+    if (ownerUser.id !== me.id) {
+      console.error('ERR:', 'You are not the owner')
+      return
+    }
+
+    console.info('Getting random answer...')
+
+    socket.emit('updates.editor.random')
+  }
+
+  socket.on('updates.editor.randomAnswer', (userId) => {
+    showEditor(userId)
   })
 
   // Event Delegations
@@ -202,6 +215,11 @@
       else {
         showEditor(event.target.dataset.userId)
       }
+    }
+
+    if (event.target.dataset.trigger === 'randomAnswer') {
+      // We need owner access to do this
+      getRandomAnswer()
     }
   })
 
