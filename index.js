@@ -81,11 +81,11 @@ io.on('connection', (socket) => {
 
     let currentEditorId = rooms[socket.room.name].editorId
     if (currentEditorId) {
-      console.log('EDITOR REVOKE:', currentEditorId)
+      // console.log('EDITOR REVOKE:', currentEditorId)
       socket.to(currentEditorId).emit('updates.editor.terminate')
       rooms[socket.room.name].editorId = null
     }
-    console.log('EDITOR UPDATE:', userId)
+    // console.log('EDITOR UPDATE:', userId)
     rooms[socket.room.name].editorId = userId
 
     // If the user is a mocked user, we'll skip this
@@ -102,7 +102,7 @@ io.on('connection', (socket) => {
   socket.on('updates.editor.terminate', () => {
     let currentEditorId = rooms[socket.room.name].editorId
     if (currentEditorId) {
-      console.log('EDITOR REVOKE:', currentEditorId)
+      // console.log('EDITOR REVOKE:', currentEditorId)
       socket.to(currentEditorId).emit('updates.editor.terminate')
       rooms[socket.room.name].editorId = null
     }
@@ -135,11 +135,11 @@ io.on('connection', (socket) => {
     // Set the userId to our room
     rooms[socket.room.name].editorId = id
 
-    console.log('EMIT UPDATE:', value, 'updates.editor.requestFulfilled')
+    //console.log('EMIT UPDATE:', value, 'updates.editor.requestFulfilled')
     socket.to(socket.room.users[0].id).emit('updates.editor', { value })
   })
   socket.on('updates.editor', ({ value }) => {
-    console.log('EMIT UPDATE:', value, 'updates.editor')
+    //console.log('EMIT UPDATE:', value, 'updates.editor')
     socket.to(socket.room.users[0].id).emit('updates.editor', { value })
   })
 
