@@ -71,6 +71,56 @@ io.on('connection', (socket) => {
     }
   })
 
+  // Send a request to get live updates from userId
+  socket.on('updates.editor.request', ({ userId }) => {
+    // If I am the owner
+    if (socket.id !== socket.room.users[0].id) {
+      console.log('ERR:', 'Non-owner requested editor value')
+      return
+    }
+
+    let currentEditorId = rooms[socket.room.name].editorId
+    if (currentEditorId) {
+      console.log('EDITOR REVOKE:', currentEditorId)
+      socket.to(currentEditorId).emit('updates.editor.terminate')
+      rooms[socket.room.name].editorId = null
+    }
+    console.log('EDITOR UPDATE:', userId)
+    rooms[socket.room.name].editorId = userId
+
+    // If the user is a mocked user, we'll skip this
+    if (!Number.isNaN(+userId)) {
+      //socket.to(socket.room.users[0].id).emit('updates.editor', { value })
+      console.log('ERR:', 'User was mocked so no request sent')
+      return
+    }
+
+    socket.to(userId).emit('updates.editor.request')
+  })
+
+  // Terminate whoever was sharing coding
+  socket.on('updates.editor.terminate', () => {
+    let currentEditorId = rooms[socket.room.name].editorId
+    if (currentEditorId) {
+      console.log('EDITOR REVOKE:', currentEditorId)
+      socket.to(currentEditorId).emit('updates.editor.terminate')
+      rooms[socket.room.name].editorId = null
+    }
+  })
+
+  // Request to listen to user editor changes fullfilled
+  socket.on('updates.editor.requestFulfilled', ({ id, value }) => {
+    // Set the userId to our room
+    rooms[socket.room.name].editorId = id
+
+    console.log('EMIT UPDATE:', value, 'updates.editor.requestFulfilled')
+    socket.to(socket.room.users[0].id).emit('updates.editor', { value })
+  })
+  socket.on('updates.editor', ({ value }) => {
+    console.log('EMIT UPDATE:', value, 'updates.editor')
+    socket.to(socket.room.users[0].id).emit('updates.editor', { value })
+  })
+
   socket.on('disconnect', () => {
     // If a user connected AND joined the room
     if (socket.room) {

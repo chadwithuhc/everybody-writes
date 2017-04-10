@@ -6,6 +6,8 @@
   let me = {}
   let ownerUser = {}
   let changingOwner = false
+  let sendEditorUpdates = false
+  let trackMyChanges = true
 
   let studentNameInput = document.querySelector('#studentName')
   if (studentNameInput) {
@@ -83,10 +85,31 @@
     writeOwnerControls()
   }
 
-  function writeContentEditor() {
+  function writeContentEditor(value) {
+    let editor = document.querySelector('[data-editor]')
+    if (editor) {
+      editor.removeEventListener('keyup', emitEditorUpdates)
+    }
+
     let template = document.querySelector('#contentTemplate').innerHTML
 
-    document.querySelector('[data-target-for="contentTemplate"]').innerHTML = template
+    document.querySelector('[data-target-for="contentTemplate"]').innerHTML = template.replace('{value}', value || me.value || '')
+
+    editor = document.querySelector('[data-editor]')
+    editor.addEventListener('keyup', emitEditorUpdates)
+  }
+
+  function emitEditorUpdates(e) {
+    // Keep my value up to date for sending at random times
+    //   We turn this off when we're writing someone elses changes
+    if (trackMyChanges) {
+      me.value = e.target.value
+    }
+
+    // But only send if we are current selected user
+    if (sendEditorUpdates) {
+      socket.emit('updates.editor', { value: e.target.value })
+    }
   }
 
   function writeOwnerControls() {
@@ -115,6 +138,49 @@
     writeContentEditor()
   }
 
+  function showEditor(userId) {
+    console.log('showEditor userId', userId)
+    // Am I the owner? Then I can see other students work
+    if (ownerUser.id !== me.id) {
+      console.error('ERR:', 'You are not the owner')
+      return
+    }
+
+    // Kill all prior listeners
+    socket.removeAllListeners('updates.editor')
+
+    // Am I showing my own editor?
+    if (me.id === userId) {
+      socket.emit('updates.editor.terminate')
+      writeContentEditor(me.value)
+      trackMyChanges = true
+      return
+    }
+
+    // Stop tracking my changes
+    trackMyChanges = false
+
+    // Start listening for changes on users value
+    socket.on('updates.editor', ({ value }) => {
+      writeContentEditor(value)
+    })
+    // Submit the request to the server, then the user
+    socket.emit('updates.editor.request', { userId })
+  }
+
+  // We are being requested to send updates
+  socket.on('updates.editor.request', () => {
+    sendEditorUpdates = true
+    trackMyChanges = true
+    socket.emit('updates.editor.requestFulfilled', me)
+  })
+
+  // We are terminating editor update requests
+  socket.on('updates.editor.terminate', () => {
+    sendEditorUpdates = false
+    trackMyChanges = true
+  })
+
   // Event Delegations
   document.addEventListener('click', (event) => {
     if (event.target.dataset.trigger === 'changeOwner') {
@@ -134,7 +200,7 @@
       }
       // Otherwise show their editor
       else {
-        // TODO
+        showEditor(event.target.dataset.userId)
       }
     }
   })
