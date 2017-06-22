@@ -22,6 +22,7 @@ __Note: Only compatible in ES6 browsers (Chrome)__
 - [ ] Highlight a good answer
 - [ ] Accepted vs non-accepted answers
 - [ ] BUG: Case insensitive URLs
+- [ ] Hide a user (for inappropriate content)
 
 
 ## Technologies
@@ -46,9 +47,9 @@ Clone repo:
 ```
 git clone https://github.com/chadwithuhc/everybody-writes.git
 npm install
-nodemon
+nodemon index.js
 # OR
-npm start
+npm run dev
 ```
 
 ## Developers
