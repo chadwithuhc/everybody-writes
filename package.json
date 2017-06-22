@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
     "start": "node index.js",
     "deploy": "git push heroku master"
   },
@@ -15,5 +16,8 @@
     "express": "^4.15.2",
     "hbs": "^4.0.1",
     "socket.io": "^1.7.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }

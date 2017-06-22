@@ -9,6 +9,8 @@
   let sendEditorUpdates = false
   let trackMyChanges = true
 
+  let Editor = null
+
   let studentNameInput = document.querySelector('#studentName')
   if (studentNameInput) {
     studentNameInput.focus()
@@ -86,29 +88,34 @@
   }
 
   function writeContentEditor(value) {
-    let editor = document.querySelector('[data-editor]')
-    if (editor) {
-      editor.removeEventListener('keyup', emitEditorUpdates)
+    value = value || me.value || ''
+
+    if (!Editor) {
+      Editor = new TextareaEditor({
+        container: document.querySelector('[data-target-for="contentTemplate"]'),
+        emitEditorUpdates
+      })
+      if (value) {
+        Editor.setContents({ value })
+      }
+
+      console.log('Editor', Editor)
     }
-
-    let template = document.querySelector('#contentTemplate').innerHTML
-
-    document.querySelector('[data-target-for="contentTemplate"]').innerHTML = template.replace('{value}', value || me.value || '')
-
-    editor = document.querySelector('[data-editor]')
-    editor.addEventListener('keyup', emitEditorUpdates)
+    else {
+      Editor.setContents({ value })
+    }
   }
 
-  function emitEditorUpdates(e) {
+  function emitEditorUpdates(value) {
     // Keep my value up to date for sending at random times
     //   We turn this off when we're writing someone elses changes
     if (trackMyChanges) {
-      me.value = e.target.value
+      me.value = value
     }
 
     // But only send if we are current selected user
     if (sendEditorUpdates) {
-      socket.emit('updates.editor', { value: e.target.value })
+      socket.emit('updates.editor', { value: value })
     }
   }
 

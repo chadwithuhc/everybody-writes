@@ -14,13 +14,25 @@ __Note: Only compatible in ES6 browsers (Chrome)__
 - [ ] Option of input type
   - [x] Textarea
   - [ ] Code Editor
-  - [ ] Drawing
-- [ ] Show all available answers
+  - [ ] Whiteboard
+  - [ ] Markdown
+- [x] Show all available answers
+- [ ] Show main question
+- [ ] Highlight a good answer
+- [ ] Accepted vs non-accepted answers
+- [ ] BUG: Case insensitive URLs
 
 
 ## Technologies
 
-NodeJS, Express, Socket.io, Handlebars, ES6
+**Server**
+- NodeJS
+- Express
+- Socket.io
+
+**Client**
+- ES6
+- Handlebars
 
 #### Techniques used
 
@@ -40,7 +52,4 @@ npm start
 
 ## Developers
 
-You can turn on Mock Data by appending `?mockData=1` to a room URL. For example:
-```
-http://localhost:3000/rooms/debugging?mockData=1
-```
+[Developer Docs](./docs) are available if you are interested in contributing
