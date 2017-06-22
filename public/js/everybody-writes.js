@@ -91,7 +91,7 @@
     value = value || me.value || ''
 
     if (!Editor) {
-      Editor = new TextareaEditor({
+      Editor = new YesNoEditor({
         container: document.querySelector('[data-target-for="contentTemplate"]'),
         emitEditorUpdates
       })
@@ -115,7 +115,7 @@
 
     // But only send if we are current selected user
     if (sendEditorUpdates) {
-      socket.emit('updates.editor', { value: value })
+      socket.emit('updates.editor', { value })
     }
   }
 
