@@ -60,14 +60,20 @@ class TextareaEditor {
 
 ```js
 var editorContents = {
-  value: string,
-  options: [],
-
+  value: string
 }
 ```
 
 Sample Editor Types:
 
-- YesNo
-- Multiple Choice
+- Textarea
+- True/False
 - Code Editor
+- Multiple Choice
+
+
+## Requirements
+
+- Include file in `public/js/editors/`
+- Include script tag in `room.hbs`
+- Add link in nav of `room.hbs`

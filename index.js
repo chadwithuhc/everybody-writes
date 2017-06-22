@@ -142,6 +142,10 @@ io.on('connection', (socket) => {
     //console.log('EMIT UPDATE:', value, 'updates.editor')
     socket.to(socket.room.users[0].id).emit('updates.editor', { value })
   })
+  socket.on('updates.editor.type', (type) => {
+    //console.log('EMIT UPDATE:', value, 'updates.editor')
+    io.in(socket.room.name).emit('updates.editor.type', type)
+  })
 
   socket.on('disconnect', () => {
     // If a user connected AND joined the room

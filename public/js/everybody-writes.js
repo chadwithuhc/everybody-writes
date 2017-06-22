@@ -91,13 +91,7 @@
     value = value || me.value || ''
 
     if (!Editor) {
-      Editor = new YesNoEditor({
-        container: document.querySelector('[data-target-for="contentTemplate"]'),
-        emitEditorUpdates
-      })
-      if (value) {
-        Editor.setContents({ value })
-      }
+      changeEditorType('TextareaEditor')
 
       console.log('Editor', Editor)
     }
@@ -201,6 +195,25 @@
     showEditor(userId)
   })
 
+  function changeEditorType(name) {
+    if (window.hasOwnProperty(name) && typeof window[name] === 'function') {
+      // Teardown old editor
+      if (Editor) {
+        Editor.teardown()
+      }
+
+      Editor = new window[name]({
+        container: document.querySelector('[data-target-for="contentTemplate"]'),
+        emitEditorUpdates
+      })
+      Editor.setContents({ value: me.value || '' })
+    }
+  }
+
+  socket.on('updates.editor.type', (type) => {
+    changeEditorType(type)
+  })
+
   // Event Delegations
   document.addEventListener('click', (event) => {
     if (event.target.dataset.trigger === 'changeOwner') {
@@ -227,6 +240,11 @@
     if (event.target.dataset.trigger === 'randomAnswer') {
       // We need owner access to do this
       getRandomAnswer()
+    }
+
+    if (event.target.dataset.trigger === 'changeEditorType') {
+      event.preventDefault()
+      socket.emit('updates.editor.type', event.target.dataset.type)
     }
   })
 

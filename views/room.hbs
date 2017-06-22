@@ -67,15 +67,14 @@
 
   <script type="text/template" id="ownerControlsTemplate">
     <ul class="navbar-nav mx-auto">
-      <!-- <li class="nav-item dropdown">
+      <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-pencil-square" aria-hidden="true"></i> Editor Type</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Textarea</a>
-          <a class="dropdown-item" href="#">Code Editor</a>
-          <a class="dropdown-item" href="#">True / False</a>
-          <a class="dropdown-item" href="#">Options</a>
+          <a class="dropdown-item" href="#" data-type="TextareaEditor" data-trigger="changeEditorType">Textarea</a>
+          <!-- <a class="dropdown-item" href="#" data-type="CodeEditor" data-trigger="changeEditorType">Code Editor</a> -->
+          <a class="dropdown-item" href="#" data-type="TrueFalseEditor" data-trigger="changeEditorType">True / False</a>
         </div>
-      </li> -->
+      </li>
       <li class="nav-item ml-2">
         <a data-trigger="randomAnswer" class="nav-link" href="javascript:void(0)"><i class="fa fa-refresh" aria-hidden="true"></i> Random Answer</a>
       </li>
@@ -92,7 +91,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/everybody-writes.js"></script>
   <script src="/js/editors/textarea.js"></script>
-  <script src="/js/editors/yes-no.js"></script>
+  <script src="/js/editors/true-false.js"></script>
 
   <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>

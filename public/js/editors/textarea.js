@@ -52,5 +52,6 @@ class TextareaEditor {
     // console.log(this.contents.value)
   }
 
-
 }
+
+window.TextareaEditor = TextareaEditor

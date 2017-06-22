@@ -1,17 +1,17 @@
-class YesNoEditor {
+class TrueFalseEditor {
 
   // We expose our `contents.value` as "yes" or "no"
   // This means we need to convert to a checked radio on `setContents()`
 
   constructor({ container, emitEditorUpdates }) {
-    console.info('New Editor: YesNo')
+    console.info('New Editor: TrueFalse')
     this.element = null
     this.inputs = [] // input radios
     this.contents = {}
     this.template = `
       <form name="yes-no">
-        <label><input type="radio" name="value" value="yes" /> Yes</label><br/>
-        <label><input type="radio" name="value" value="no" /> No</label>
+        <label><input type="radio" name="value" value="true" /> True</label><br/>
+        <label><input type="radio" name="value" value="false" /> False</label>
       </form>
     `
     this.emitEditorUpdates = emitEditorUpdates
@@ -76,3 +76,5 @@ class YesNoEditor {
   }
 
 }
+
+window.TrueFalseEditor = TrueFalseEditor

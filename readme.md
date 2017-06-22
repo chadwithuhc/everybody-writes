@@ -11,8 +11,9 @@ __Note: Only compatible in ES6 browsers (Chrome)__
   - [x] First person is considered owner
   - [x] Owner can be switched by owner
   - [x] If owner leaves, next earliest user is promoted
-- [ ] Option of input type
+- [x] Option of input type
   - [x] Textarea
+  - [x] True/False
   - [ ] Code Editor
   - [ ] Whiteboard
   - [ ] Markdown
