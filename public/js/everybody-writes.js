@@ -10,6 +10,7 @@
   let trackMyChanges = true
 
   let Editor = null
+  const DEFAULT_EDITOR_TYPE = 'CodeEditor'
 
   let studentNameInput = document.querySelector('#studentName')
   if (studentNameInput) {
@@ -91,7 +92,7 @@
     value = value || me.value || ''
 
     if (!Editor) {
-      changeEditorType('TextareaEditor')
+      changeEditorType(DEFAULT_EDITOR_TYPE)
 
       console.log('Editor', Editor)
     }
