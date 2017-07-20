@@ -14,7 +14,7 @@ __Note: Only compatible in ES6 browsers (Chrome)__
 - [x] Option of input type
   - [x] Textarea
   - [x] True/False
-  - [x] Code Editor
+  - [ ] Code Editor
   - [ ] Whiteboard
   - [ ] Markdown
 - [x] Show all available answers
