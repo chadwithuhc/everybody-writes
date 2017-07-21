@@ -9,20 +9,42 @@ __Note: Only compatible in ES6 browsers (Chrome)__
 - [x] Anyone with URL can join
   - [x] Joining a room available from homepage
   - [x] First person is considered owner
+
+### Roles
+- [x] Owner
+  - [x] First person is considered owner
   - [x] Owner can be switched by owner
   - [x] If owner leaves, next earliest user is promoted
-- [x] Option of input type
-  - [x] Textarea
-  - [x] True/False
-  - [ ] Code Editor
-  - [ ] Whiteboard
-  - [ ] Markdown
-- [x] Show all available answers
-- [ ] Show main question
+  - [ ] Owner can assign roles to others
+  - [ ] Can Hide a user (for inappropriate content)
+- [ ] Student
+  - [x] Default role when joining room
+- [ ] Assistant
+  - [ ] Can mark answers correct/incorrect
+  - [ ] Can Hide a user (for inappropriate content)
+
+### Board Setup
+- [ ] Instructions
+- [ ] Options
+- [ ] Answer (to auto-accept answers)
+
+### Input Types
+- [x] Textarea
+- [x] True/False
+- [x] Code Editor
+  - [ ] Allow choice of language
+* [ ] Multiple Choice
+  - [ ] Correct answer
+- [ ] Whiteboard
+- [ ] Markdown
+
+### Bugs
+- [ ] BUG: Case insensitive URLs
+
+### Backlog
 - [ ] Highlight a good answer
 - [ ] Accepted vs non-accepted answers
-- [ ] BUG: Case insensitive URLs
-- [ ] Hide a user (for inappropriate content)
+  - [ ] Highlight a good answer
 
 
 ## Technologies
@@ -38,7 +60,7 @@ __Note: Only compatible in ES6 browsers (Chrome)__
 
 #### Techniques used
 
-DOM Manipulation, HOF, Event Delegation
+DOM Manipulation, HOF, Event Delegation, OOP Interfaces
 
 
 ## Running an exercise locally
