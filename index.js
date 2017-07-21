@@ -12,7 +12,7 @@ const mockUsers = require('./mockUsers.json').map((user) => {
 })
 
 // DEBUGGING: Testing with mock users
-app.set('mockData', false)
+app.set('mockData', true)
 
 app.set('port', process.env.PORT || 3000)
 
@@ -90,8 +90,11 @@ io.on('connection', (socket) => {
 
     // If the user is a mocked user, we'll skip this
     if (!Number.isNaN(+userId)) {
-      //socket.to(socket.room.users[0].id).emit('updates.editor', { value })
-      console.log('ERR:', 'User was mocked so no request sent')
+      console.log(socket.room)
+      const userData = socket.room.users.filter(user => user.id === socket.room.editorId)[0]
+      console.log(userData)
+      socket.emit('updates.editor', { value: userData.value })
+      console.log('NOTICE:', 'User was mocked so no request sent')
       return
     }
 
