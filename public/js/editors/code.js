@@ -1,7 +1,6 @@
 class CodeEditor {
 
   constructor({ container, emitEditorUpdates }) {
-    console.info('New Editor: CodeEditor')
     this.element = null
     this.codemirror = null // Codemirror instance
     this.contents = {}

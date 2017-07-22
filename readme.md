@@ -27,6 +27,7 @@ __Note: Only compatible in ES6 browsers (Chrome)__
 - [ ] Instructions
 - [ ] Options
 - [ ] Answer (to auto-accept answers)
+- [ ] Timer
 
 ### Input Types
 - [x] Textarea

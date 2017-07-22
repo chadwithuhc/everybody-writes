@@ -1,18 +1,23 @@
-class TrueFalseEditor {
+class MultipleChoiceEditor {
 
   // We expose our `contents.value` as "yes" or "no"
   // This means we need to convert to a checked radio on `setContents()`
 
-  constructor({ container, emitEditorUpdates }) {
+  constructor({ container, emitEditorUpdates, config = {} }) {
     this.element = null
     this.inputs = [] // input radios
     this.contents = {}
-    this.template = `
-      <form name="yes-no">
-        <label><input type="radio" name="value" value="true" /> True</label><br/>
-        <label><input type="radio" name="value" value="false" /> False</label>
+    this.config = { type: 'radio', options: [
+      {name:'Yeah Dude!',value:'yeahdude'},
+      {name:'Nah Dude!',value:'nahdude'},
+    ]}
+    this.template = Handlebars.compile(`
+      <form name="multiple-choice">
+        {{#each config.options}}
+        <label><input type="{{../config.type}}" name="value" value="{{this.value}}" /> {{this.name}}</label><br/>
+        {{/each}}
       </form>
-    `
+    `)
     this.emitEditorUpdates = emitEditorUpdates
 
     // Bindings
@@ -39,7 +44,8 @@ class TrueFalseEditor {
 
   create(container) {
     // Generate HTML & write
-    container.innerHTML = this.template
+    container.innerHTML = this.template({ config: this.config })
+    console.log(this.config, container.innerHTML)
 
     // Store element for later
     this.element = container.children[0]
@@ -76,4 +82,10 @@ class TrueFalseEditor {
 
 }
 
-window.TrueFalseEditor = TrueFalseEditor
+class MultipleChoiceEditorConfigure {
+
+}
+
+MultipleChoiceEditor.Configure = MultipleChoiceEditorConfigure
+
+window.MultipleChoiceEditor = MultipleChoiceEditor

@@ -1,7 +1,6 @@
 class TextareaEditor {
 
   constructor({ container, emitEditorUpdates }) {
-    console.info('New Editor: Textarea')
     this.element = null
     this.contents = {}
     this.template = `<textarea class="form-control" style="height:80vh"></textarea>`
