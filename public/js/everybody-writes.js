@@ -201,14 +201,34 @@
       // Teardown old editor
       if (Editor) {
         Editor.teardown()
+        Editor = null
       }
 
-      Editor = new window[name]({
-        container: document.querySelector('[data-target-for="contentTemplate"]'),
-        emitEditorUpdates
+      createEditorConfig(name).then((config) => {
+        Editor = new window[name]({
+          container: document.querySelector('[data-target-for="contentTemplate"]'),
+          emitEditorUpdates,
+          config
+        })
+        Editor.setContents({ value: me.value || '' })
       })
-      Editor.setContents({ value: me.value || '' })
     }
+  }
+
+  function createEditorConfig(name) {
+    return new Promise((resolve, reject) => {
+      const NewEditor = window[name]
+
+      if (NewEditor.Configure && typeof NewEditor.Configure === 'function') {
+        new NewEditor.Configure({
+          container: document.querySelector('[data-target-for="contentTemplate"]'),
+          resolve
+        })
+        return
+      }
+
+      resolve()
+    })
   }
 
   socket.on('updates.editor.type', (type) => {

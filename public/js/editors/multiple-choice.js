@@ -7,10 +7,7 @@ class MultipleChoiceEditor {
     this.element = null
     this.inputs = [] // input radios
     this.contents = {}
-    this.config = { type: 'radio', options: [
-      {name:'Yeah Dude!',value:'yeahdude'},
-      {name:'Nah Dude!',value:'nahdude'},
-    ]}
+    this.config = config
     this.template = Handlebars.compile(`
       <form name="multiple-choice">
         {{#each config.options}}
@@ -45,7 +42,6 @@ class MultipleChoiceEditor {
   create(container) {
     // Generate HTML & write
     container.innerHTML = this.template({ config: this.config })
-    console.log(this.config, container.innerHTML)
 
     // Store element for later
     this.element = container.children[0]
@@ -83,6 +79,71 @@ class MultipleChoiceEditor {
 }
 
 class MultipleChoiceEditorConfigure {
+
+  constructor({ container, resolve }) {
+    this.resolve = resolve
+    this.template = Handlebars.compile(`
+      <form name="multiple-choice-configure">
+        <fieldset>
+          <h3>Type</h3>
+          <label><input type="radio" name="type" value="radio" /> Single Answer</label><br/>
+          <label><input type="radio" name="type" value="checkbox" /> Multiple Answers</label>
+        </fieldset>
+
+        <fieldset>
+          {{#each options}}
+          {{/each}}
+        </fieldset>
+
+        <button type="submit">Create</button>
+      </form>
+    `)
+
+    // Bindings
+    this.onSubmit = this.onSubmit.bind(this)
+    this.onComplete = this.onComplete.bind(this)
+
+    return this.create(container)
+  }
+
+  create(container) {
+    // Generate HTML & write
+    container.innerHTML = this.template({  })
+
+    // Store element for later
+    this.element = container.children[0]
+    this.inputs = []
+
+    // Add any listeners
+    this.element.addEventListener('submit', this.onSubmit)
+
+    return this
+  }
+
+  teardown() {
+    this.element.removeEventListener('submit', this.onSubmit)
+    this.element.remove()
+    this.element = null
+  }
+
+  onSubmit(e) {
+    e.preventDefault()
+    const data = new FormData(e.target)
+
+    console.log({
+      type: data.get('type')
+    })
+
+    this.onComplete({ type: 'radio', options: [
+        {name:'Yeah Dude!',value:'yeahdude'},
+        {name:'Nah Dude!',value:'nahdude'},
+      ]})
+  }
+
+  onComplete(config) {
+    this.teardown()
+    this.resolve(config)
+  }
 
 }
 
