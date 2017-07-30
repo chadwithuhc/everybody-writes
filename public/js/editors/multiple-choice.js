@@ -91,8 +91,7 @@ class MultipleChoiceEditorConfigure {
         </fieldset>
 
         <fieldset>
-          {{#each options}}
-          {{/each}}
+          <textarea name="multiple-choice-options" cols="30" rows="6"></textarea>
         </fieldset>
 
         <button type="submit">Create</button>
@@ -112,7 +111,7 @@ class MultipleChoiceEditorConfigure {
 
     // Store element for later
     this.element = container.children[0]
-    this.inputs = []
+    this.optionsElement = this.element.querySelector('[name="multiple-choice-options"]')
 
     // Add any listeners
     this.element.addEventListener('submit', this.onSubmit)
@@ -126,18 +125,33 @@ class MultipleChoiceEditorConfigure {
     this.element = null
   }
 
+  convertTextareaToOptionsArray(contents) {
+    const options = contents.split('\n')
+    return options.map((option) => {
+      return {
+        name: option,
+        value: option
+      }
+    })
+  }
+
   onSubmit(e) {
     e.preventDefault()
     const data = new FormData(e.target)
 
-    console.log({
-      type: data.get('type')
-    })
+    /**
+     * SAMPLE:
+     * { type: 'radio', options: [
+         {name:'Yeah Dude!',value:'yeahdude'},
+         {name:'Nah Dude!',value:'nahdude'},
+       ]}
+     */
+    const config = {
+      type: data.get('type') || 'radio',
+      options: this.convertTextareaToOptionsArray(data.get('multiple-choice-options'))
+    }
 
-    this.onComplete({ type: 'radio', options: [
-        {name:'Yeah Dude!',value:'yeahdude'},
-        {name:'Nah Dude!',value:'nahdude'},
-      ]})
+    this.onComplete(config)
   }
 
   onComplete(config) {
