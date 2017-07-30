@@ -10,7 +10,7 @@
   let trackMyChanges = true
 
   let Editor = null
-  const DEFAULT_EDITOR_TYPE = 'CodeEditor'
+  const { DEFAULT_EDITOR_TYPE } = CONFIG
 
   let studentNameInput = document.querySelector('#studentName')
   if (studentNameInput) {
@@ -93,8 +93,6 @@
 
     if (!Editor) {
       changeEditorType(DEFAULT_EDITOR_TYPE)
-
-      console.log('Editor', Editor)
     }
     else {
       Editor.setContents({ value })

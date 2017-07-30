@@ -151,7 +151,7 @@ class MultipleChoiceEditorConfigure {
       options: this.convertTextareaToOptionsArray(data.get('multiple-choice-options'))
     }
 
-    this.onComplete(config)
+    this.onComplete(CONFIG.MOCK_MULTIPLE_CHOICE_OPTIONS || config)
   }
 
   onComplete(config) {
