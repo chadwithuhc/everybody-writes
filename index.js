@@ -12,7 +12,7 @@ const mockUsers = require('./mockUsers.json').map((user) => {
 })
 
 // DEBUGGING: Testing with mock users
-app.set('mockData', true)
+app.set('mockData', false)
 
 app.set('port', process.env.PORT || 3000)
 

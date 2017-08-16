@@ -38,6 +38,7 @@ __Note: Only compatible in ES6 browsers (Chrome)__
   - [ ] Correct answer
 - [ ] Whiteboard
 - [ ] Markdown
+- [ ] Fist of 5
 
 ### Bugs
 - [ ] BUG: Case insensitive URLs
